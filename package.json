@@ -1,0 +1,33 @@
+{
+  "name": "poly-bem.js",
+  "version": "0.0.9",
+  "description": "Блочный сборщик статики",
+  "bin": {
+    "polybem": "polybem.js"
+  },
+  "preferGlobal": true,
+  "dependencies": {
+    "browser-sync": "^2.18.8",
+    "gulp": "^3.9.1",
+    "gulp-beml": "^1.0.0",
+    "gulp-concat": "^2.6.1",
+    "gulp-cssnano": "^2.1.2",
+    "gulp-rename": "^1.2.2",
+    "gulp-stylus": "^2.6.0",
+    "gulp-uglifyjs": "^0.6.2"
+  },
+  "devDependencies": {
+    "gulp-compile-handlebars": "^0.6.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-declare": "^0.3.0",
+    "gulp-handlebars": "^4.0.0",
+    "gulp-handlebars-html": "0.0.2",
+    "gulp-wrap": "^0.13.0",
+    "handlebars": "^4.0.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Litvinov-Victor",
+  "license": "ISC"
+}

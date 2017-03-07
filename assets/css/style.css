@@ -1,0 +1,67 @@
+html {
+  height: 100%;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+.section {
+  text-align: center;
+  font-family: 'Ranga', cursive;
+  font-size: 95px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+  height: 100vh;
+  min-height: 100%;
+  box-sizing: border-box;
+  color: #fff;
+  -webkit-animation: 5s logoopacity;
+  animation-iteration-count: infinite;
+  -moz-animation-iteration-count: infinite;
+  -webkit-animation-iteration-count: infinite;
+}
+.link {
+  font-size: 19px;
+  color: #fff;
+}
+.top {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  font-family: 'Ranga', cursive;
+  color: #fff;
+  font-weight: 100;
+}
+.bot {
+  position: absolute;
+  left: 15px;
+  bottom: 15px;
+  font-family: 'Ranga', cursive;
+  color: #fff;
+  font-weight: 100;
+  font-size: 15px;
+}
+.bot a {
+  font-size: 15px;
+}
+@-webkit-keyframes logoopacity {
+  0% {
+    opacity: 0.3;
+  }
+  25% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.3;
+  }
+}
