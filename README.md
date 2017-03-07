@@ -4,6 +4,11 @@
 ```git
   git clone https://github.com/Litvinov-Victor/poly-bem.git && npm install
 ```
+После установки заходим в папку poly-bem , открываем консоль (Открыть окно команд) - вводим команду
+
+```git
+  npm-install
+```
 
 # Для запуска ввести команду
 
