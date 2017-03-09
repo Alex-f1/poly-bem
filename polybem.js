@@ -112,7 +112,7 @@ gulp.task('styl', function () {
         .pipe(browserSync.reload({stream: true}))
 });
 
-gulp.task('scripts', function() {
+gulp.task('poly-scripts', function() {
     return gulp.src([
         'assets/plugins/jquery/dist/jquery.min.js'
         ])
@@ -146,7 +146,7 @@ gulp.task('browser-sync', function() {
 });
 
 
-gulp.task('watch', ['browser-sync', 'styl', 'css-libs', 'scripts', 'all-scripts', 'poly-beml'], function() {
+gulp.task('watch', ['browser-sync', 'styl', 'css-libs', 'poly-scripts', 'all-scripts', 'poly-beml'], function() {
     gulp.watch('./assets/**/*.styl', ['styl']);
     gulp.watch('./assets/**/*.hbs', ['poly-beml'], browserSync.reload);
     gulp.watch('./dist/**/*.html', browserSync.reload);
