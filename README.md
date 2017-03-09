@@ -12,7 +12,7 @@
 
 # Для запуска ввести команду
 
-```git
+```bash
   OS Windows: polybem
   OS Linux: node polybem
 ```
