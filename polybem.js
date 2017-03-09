@@ -83,7 +83,7 @@ gulp.on('task_not_found', function(err) {
 
 // options
 
-gulp.task('beml', function () {
+gulp.task('poly-beml', function () {
     var templateData = {
         firstName: 'Poly-Bem.js'
     },
@@ -146,9 +146,9 @@ gulp.task('browser-sync', function() {
 });
 
 
-gulp.task('watch', ['browser-sync', 'styl', 'css-libs', 'scripts', 'all-scripts', 'beml'], function() {
+gulp.task('watch', ['browser-sync', 'styl', 'css-libs', 'scripts', 'all-scripts', 'poly-beml'], function() {
     gulp.watch('./assets/**/*.styl', ['styl']);
-    gulp.watch('./assets/**/*.hbs', ['beml'], browserSync.reload);
+    gulp.watch('./assets/**/*.hbs', ['poly-beml'], browserSync.reload);
     gulp.watch('./dist/**/*.html', browserSync.reload);
     gulp.watch('./assets/**/*.js', ['all-scripts'], browserSync.reload);
 });
