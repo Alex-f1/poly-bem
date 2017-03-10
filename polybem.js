@@ -85,7 +85,8 @@ gulp.on('task_not_found', function(err) {
 
 gulp.task('poly-beml', function () {
     var templateData = {
-        firstName: 'Poly-Bem.js'
+        firstName: 'Poly-Bem.js',
+        titleName: 'Poly-Bem.js - блочный сюорщик сайтов'
     },
     options = {
         ignorePartials: true,
