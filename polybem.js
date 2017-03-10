@@ -14,6 +14,7 @@ let gulpHandlebars = require('gulp-compile-handlebars');
 let rename = require('gulp-rename');
 
 let stylus = require('gulp-stylus');
+let autoprefixer = require('gulp-autoprefixer');
 let wrap = require('gulp-wrap');
 let declare = require('gulp-declare');
 let prettyTime = require('pretty-hrtime');
@@ -108,6 +109,7 @@ gulp.task('poly-beml', function () {
 gulp.task('styl', function () {
     return gulp.src('assets/css/style.styl')
         .pipe(stylus())
+        .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
         .pipe(gulp.dest('assets/css'))
         .pipe(gulp.dest('dist/css'))
         .pipe(browserSync.reload({stream: true}))
