@@ -26,134 +26,151 @@ let failed = false;
 
 // Format orchestrator errors
 function formatError(e) {
-    if (!e.err) {
-        return e.message;
-    }
+	if (!e.err) {
+		return e.message;
+	}
 
-    // PluginError
-    if (typeof e.err.showStack === 'boolean') {
-        return e.err.toString();
-    }
+	// PluginError
+	if (typeof e.err.showStack === 'boolean') {
+		return e.err.toString();
+	}
 
-    // Normal error
-    if (e.err.stack) {
-        return e.err.stack;
-    }
+	// Normal error
+	if (e.err.stack) {
+		return e.err.stack;
+	}
 
-    // Unknown (string, number, etc.)
-    return new Error(String(e.err)).stack;
+	// Unknown (string, number, etc.)
+	return new Error(String(e.err)).stack;
 }
 
 // Total hack due to poor error management in orchestrator
 gulp.on('err', function() {
-    failed = true;
+	failed = true;
 });
 
 gulp.on('task_start', function(e) {
-    // TODO: batch these
-    // so when 5 tasks start at once it only logs one time with all 5
-    gutil.log('Starting', '\'' + chalk.cyan(e.task) + '\'...');
+	// TODO: batch these
+	// so when 5 tasks start at once it only logs one time with all 5
+	gutil.log('Starting', '\'' + chalk.cyan(e.task) + '\'...');
 });
 
 gulp.on('task_stop', function(e) {
-    let time = prettyTime(e.hrDuration);
-    gutil.log(
-        'Finished', '\'' + chalk.cyan(e.task) + '\'',
-        'after', chalk.magenta(time)
-    );
+	let time = prettyTime(e.hrDuration);
+	gutil.log(
+		'Finished', '\'' + chalk.cyan(e.task) + '\'',
+		'after', chalk.magenta(time)
+	);
 });
 
 gulp.on('task_err', function(e) {
-    let msg = formatError(e);
-    let time = prettyTime(e.hrDuration);
-    gutil.log(
-        '\'' + chalk.cyan(e.task) + '\'',
-        chalk.red('errored after'),
-        chalk.magenta(time)
-    );
-    gutil.log(msg);
+	let msg = formatError(e);
+	let time = prettyTime(e.hrDuration);
+	gutil.log(
+		'\'' + chalk.cyan(e.task) + '\'',
+		chalk.red('errored after'),
+		chalk.magenta(time)
+	);
+	gutil.log(msg);
 });
 
 gulp.on('task_not_found', function(err) {
-    gutil.log(
-        chalk.red('Task \'' + err.task + '\' is not in your gulpfile')
-    );
-    gutil.log('Please check the documentation for proper gulpfile formatting');
-    process.exit(1);
+	gutil.log(
+		chalk.red('Task \'' + err.task + '\' is not in your gulpfile')
+	);
+	gutil.log('Please check the documentation for proper gulpfile formatting');
+	process.exit(1);
 });
 
 // options
 
+var path = {
+	build: {
+		html: 'dist/',
+		js: 'dist/js/',
+		css: 'dist/css/',
+		fonts: 'dist/fonts/',
+		video: 'dist/video/'
+	},
+	assets: {
+		html: 'assets/*.html',
+		js: 'assets/js/',
+		style: 'assets/css',
+		styl: 'assets/css/style.styl',
+		fonts: 'assets/fonts/**/*.*'
+	}
+};
+
 gulp.task('poly-beml', function () {
-    var templateData = {
-        firstName: 'Poly-Bem.js',
-        titleName: 'Poly-Bem.js - блочный сюорщик сайтов'
-    },
-    options = {
-        ignorePartials: true,
-        partials : {},
-        batch : ['assets/section'],
-        helpers : {
-            capitals : function(str){
-                return str.toUpperCase();
-            }
-        }
-    }
-    return gulp.src('assets/layout.hbs')
-        .pipe(gulpHandlebars(templateData, options))
-        .pipe(beml())
-        .pipe(rename('index.html'))
-        .pipe(gulp.dest('dist/'));
+	var templateData = {
+		firstName: 'Poly-Bem.js',
+		titleName: 'Poly-Bem.js - блочный сюорщик сайтов'
+	},
+	options = {
+		ignorePartials: true,
+		partials : {},
+		batch : ['assets/section'],
+		helpers : {
+			capitals : function(str){
+				return str.toUpperCase();
+			}
+		}
+	}
+	return gulp.src('assets/layout.hbs')
+		.pipe(gulpHandlebars(templateData, options))
+		.pipe(beml())
+		.pipe(rename('index.html'))
+		.pipe(gulp.dest(path.build.html));
 });
 
 gulp.task('styl', function () {
-    return gulp.src('assets/css/style.styl')
-        .pipe(stylus())
-        .pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
-        .pipe(gulp.dest('assets/css'))
-        .pipe(gulp.dest('dist/css'))
-        .pipe(browserSync.reload({stream: true}))
+	return gulp.src(path.assets.styl)
+		.pipe(stylus())
+		.pipe(autoprefixer(['last 15 versions', '> 1%', 'ie 8', 'ie 7'], { cascade: true }))
+		.pipe(gulp.dest(path.assets.style))
+		.pipe(gulp.dest(path.build.css))
+		.pipe(browserSync.reload({stream: true}))
 });
 
 gulp.task('poly-scripts', function() {
-    return gulp.src([
-        'assets/plugins/jquery/dist/jquery.min.js'
-        ])
-        .pipe(concat('plugins.min.js'))
-        .pipe(uglify())
-        .pipe(gulp.dest('assets/js'))
-        .pipe(gulp.dest('dist/js'));
+	return gulp.src([
+		'assets/plugins/jquery/dist/jquery.min.js'
+		])
+		.pipe(concat('plugins.min.js'))
+		.pipe(uglify())
+		.pipe(gulp.dest(path.assets.js))
+		.pipe(gulp.dest(path.build.js));
 });
 
 gulp.task('css-libs', ['styl'], function() {
-    return gulp.src('assets/css/libs.css')
-        .pipe(cssnano())
-        .pipe(rename({suffix: '.min'}))
-        .pipe(gulp.dest('assets/css'))
-        .pipe(gulp.dest('dist/css'));
+	return gulp.src('assets/css/libs.css')
+		.pipe(cssnano())
+		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest(path.assets.style))
+		.pipe(gulp.dest(path.build.css));
 });
 
 gulp.task('all-scripts', function() {
-    return gulp.src('assets/js/main.js')
-        .pipe(gulp.dest('assets/js/'))
-        .pipe(gulp.dest('dist/js/'));
+	return gulp.src('assets/js/main.js')
+		.pipe(gulp.dest(path.assets.js))
+		.pipe(gulp.dest(path.build.js));
 });
 
 gulp.task('browser-sync', function() {
-    browserSync({
-        server: {
-            baseDir: './dist/'
-        },
-        notify: false
-    });
+	browserSync({
+		server: {
+			baseDir: './dist/'
+		},
+		notify: false
+	});
 });
 
 
 gulp.task('watch', ['browser-sync', 'styl', 'css-libs', 'poly-scripts', 'all-scripts', 'poly-beml'], function() {
-    gulp.watch('./assets/**/*.styl', ['styl']);
-    gulp.watch('./assets/**/*.hbs', ['poly-beml'], browserSync.reload);
-    gulp.watch('./dist/**/*.html', browserSync.reload);
-    gulp.watch('./assets/**/*.js', ['all-scripts'], browserSync.reload);
+	gulp.watch('./assets/**/*.styl', ['styl']);
+	gulp.watch('./assets/**/*.hbs', ['poly-beml'], browserSync.reload);
+	gulp.watch('./dist/**/*.html', browserSync.reload);
+	gulp.watch('./assets/**/*.js', ['all-scripts'], browserSync.reload);
 });
 
 gulp.start('watch');
